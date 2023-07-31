@@ -7,13 +7,13 @@ import PromptCard from "./PromptCard";
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
     <div className="mt-16 prompt_layout">
-      {data.map((post) => {
+      {data.map((post) => (
         <PromptCard
-          key={post.id}
+          key={post._id}
           post={post}
           handleTagClick={handleTagClick}
-        />;
-      })}
+        />
+      ))}
     </div>
   );
 };
@@ -59,6 +59,13 @@ const Feed = () => {
     );
   };
 
+  const handleTagClick = (tagName) => {
+    setSearchText(tagName);
+
+    const searchResults = filterPrompts(tagName);
+    setSearchedResults(searchResults);
+  };
+
   return (
     <section className="feed">
       <form action="" className="relative w-full flex-center">
@@ -70,6 +77,15 @@ const Feed = () => {
           className="search_input peer"
         />
       </form>
+
+      {searchText ? (
+        <PromptCardList
+          data={searchedResults}
+          handleTagClick={handleTagClick}
+        />
+      ) : (
+        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+      )}
     </section>
   );
 };
